@@ -133,14 +133,6 @@ void ofApp::update(){
         
     }
     
-    
-    for(vector<Particle>::iterator it=p.begin(); it!=p.end(); it++){
-        it -> setMode(currentMode);
-        it -> update(centerOfFace, attractPoints, transAtt, transMed);
-        it -> color.set( pixels.getColor( ofMap(it -> pos.x, 0, WindowWidth, 0, 640), ofMap(it -> pos.y, 0, WindowHeight, 0, 480) ));
-        
-    }
-    
     // Attention values = particle size/resolution
     if(attention >= 0 && attention <= 10){
         transAtt = 4.2;
@@ -244,6 +236,13 @@ void ofApp::update(){
             it -> chaos(0.15);
         }
     }
+
+    // Render our particle updates
+    for(vector<Particle>::iterator it=p.begin(); it!=p.end(); it++){
+        it -> setMode(currentMode);
+        it -> update(centerOfFace, attractPoints, transAtt, transMed);
+        it -> color.set( pixels.getColor( ofMap(it -> pos.x, 0, WindowWidth, 0, 640), ofMap(it -> pos.y, 0, WindowHeight, 0, 480) ));
+    }
 }
 
 //--------------------------------------------------------------
@@ -259,7 +258,7 @@ void ofApp::draw(){
     
     
     // mapping image to screen dimension
-    if(faceOutline.size()>0){
+    if(faceOutline.size() > 0){
         centerOfFace.set(faceOutline.getCentroid2D() );
         centerOfRightEye.set(rightEye.getCentroid2D() );
         centerOfLeftEye.set(leftEye.getCentroid2D() );
@@ -313,7 +312,7 @@ void ofApp::draw(){
     }
     
     if(viewMode > 2){
-        cam.draw(50, ofGetHeight()-600);
+        cam.draw(50, Height-600);
     }
     
     // Indicator Light for Signal
@@ -328,9 +327,6 @@ void ofApp::draw(){
         ofDrawRectangle(0, 0, 8, 8);
     }
     
-    
-    ofSetColor(0);
-    ofDrawRectangle(0, WindowHeight-50, WindowWidth, 50);
 }
 
 //--------------------------------------------------------------

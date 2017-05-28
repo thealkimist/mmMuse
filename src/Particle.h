@@ -34,6 +34,9 @@ public:
     void update(ofPoint centerOfFace, vector <ofPoint> attractPoints, float _scale, float _drag);
     void draw();
     void chaos(float forceMultipler);
+
+    int Width;
+    int Height;
     
     ofPoint pos;
     ofPoint vel;
