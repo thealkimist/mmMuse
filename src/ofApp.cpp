@@ -9,8 +9,16 @@ void ofApp::setup(){
     ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);
     ofBackground(0);
     
+    // set our port
     receiver.setup(port);
     
+    // muse values
+    bTouchingForehead = 0;
+    signalQuality = 0;
+    alphaAbsolute = 0.0;
+    betaAbsolute = 0.0;
+    
+    // mapping values
     distAw = 0.0;
     prevAw = 0.0;
     currAw = 0.0;
@@ -36,7 +44,7 @@ void ofApp::setup(){
     tracker.setRescale(.5);
     
     int num = 7000;
-    p.assign(num, demoParticle());
+    p.assign(num, Particle());
     currentMode = PARTICLE_MODE_NEAREST_POINTS;
     resetParticles();
     
@@ -70,7 +78,7 @@ void ofApp::meditationListener(float &param) {
 //--------------------------------------------------------------
 void ofApp::resetParticles(){
     
-    //these are the attraction points used in the forth demo
+    //these are the attraction points used in the forth 
     attractPoints.clear();
     for(int i = 0; i < 4; i++){
         attractPoints.push_back( ofPoint(0,0) );
@@ -78,7 +86,7 @@ void ofApp::resetParticles(){
     
     attractPointsWithMovement = attractPoints;
     
-    for(vector<demoParticle>::iterator it = p.begin(); it != p.end(); it++ ){
+    for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
         it -> setMode(currentMode);
         it -> setAttractPoints(&attractPointsWithMovement);;
         it -> reset();
@@ -88,22 +96,30 @@ void ofApp::resetParticles(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    //     cout << receiver.hasWaitingMessages() << endl;
     while (receiver.hasWaitingMessages()) {
-        //cout << "hello there!" << endl;
         ofxOscMessage m;
+        
         receiver.getNextMessage(&m);
-        //        cout << m.getAddress() << endl;
+        
         if (m.getAddress() == "/muse/elements/touching_forehead") {
-            string message = m.getArgAsString(0);
-            //            int i = m.getArgAsInt32(1);
-            //            uint64_t j = m.getArgAsInt64(2);
-            //            float f = m.getArgAsFloat(3);
-            
-            cout << message << endl;
-            //            cout << i << endl;
-            //            cout << j << endl;
-            //            cout << f << endl;
+            bTouchingForehead = m.getArgAsInt32(0);
+            cout << "Touching Forehead: " << bTouchingForehead << endl;
+        }
+        if (m.getAddress() == "/muse/elements/horseshoe") {
+            signalQuality = m.getArgAsFloat(0);
+            cout << "Signal Quality: " << signalQuality << endl;
+        }
+        if (m.getAddress() == "/muse/elements/alpha_absolute") {
+//            string message = m.getArgAsString(0);
+//            int i = m.getArgAsInt32(1);
+//            uint64_t j = m.getArgAsInt64(2);
+//            float f = m.getArgAsFloat(3);
+        }
+        if (m.getAddress() == "/muse/elements/beta_absolute") {
+//            string message = m.getArgAsString(0);
+//            int i = m.getArgAsInt32(1);
+//            uint64_t j = m.getArgAsInt64(2);
+//            float f = m.getArgAsFloat(3);
         }
     }
     
@@ -117,7 +133,7 @@ void ofApp::update(){
     }
     
     
-    for(vector<demoParticle>::iterator it=p.begin(); it!=p.end(); it++){
+    for(vector<Particle>::iterator it=p.begin(); it!=p.end(); it++){
         it -> setMode(currentMode);
         it -> update(centerOfFace, attractPoints, transAtt, transMed);
         it -> color.set( pixels.getColor( ofMap(it -> pos.x, 0, ofGetWindowWidth(), 0, 640), ofMap(it -> pos.y, 0, ofGetWindowHeight(), 0, 480) ));
@@ -163,7 +179,7 @@ void ofApp::update(){
     if(meditation >= 0 && meditation <= 10){
         transMed = ofRandom(0.90,0.98);
         particles.frcVar = 5;
-        for(vector<demoParticle>::iterator it = p.begin(); it != p.end(); it++ ){
+        for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
             it -> chaos(4);
         }
@@ -171,7 +187,7 @@ void ofApp::update(){
     if(meditation >=11 && meditation <= 20){
         transMed = ofRandom(0.91,0.98);
         particles.frcVar = 4;
-        for(vector<demoParticle>::iterator it = p.begin(); it != p.end(); it++ ){
+        for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
             it -> chaos(3);
         }
@@ -179,7 +195,7 @@ void ofApp::update(){
     if(meditation >=21 && meditation <= 30){
         transMed = ofRandom(0.92,0.98);
         particles.frcVar = 3;
-        for(vector<demoParticle>::iterator it = p.begin(); it != p.end(); it++ ){
+        for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
             it -> chaos(2);
         }
@@ -187,7 +203,7 @@ void ofApp::update(){
     if(meditation >=31 && meditation <= 40){
         transMed = ofRandom(0.93,0.98);
         particles.frcVar = 2;
-        for(vector<demoParticle>::iterator it = p.begin(); it != p.end(); it++ ){
+        for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
             it -> chaos(1);
         }
@@ -195,7 +211,7 @@ void ofApp::update(){
     if(meditation >=41 && meditation <= 50){
         transMed = ofRandom(0.94,0.98);
         particles.frcVar = 1.7;
-        for(vector<demoParticle>::iterator it = p.begin(); it != p.end(); it++ ){
+        for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
             it -> chaos(0.7);
         }
@@ -203,7 +219,7 @@ void ofApp::update(){
     if(meditation >= 51 && meditation <= 60){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 1.4;
-        for(vector<demoParticle>::iterator it = p.begin(); it != p.end(); it++ ){
+        for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
             it -> chaos(0.4);
         }
@@ -211,7 +227,7 @@ void ofApp::update(){
     if(meditation >= 61 && meditation <= 70){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 1.1;
-        for(vector<demoParticle>::iterator it = p.begin(); it != p.end(); it++ ){
+        for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
             it -> chaos(0.15);
         }
@@ -219,7 +235,7 @@ void ofApp::update(){
     if(meditation >= 71 && meditation <= 80){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 0.8;
-        for(vector<demoParticle>::iterator it = p.begin(); it != p.end(); it++ ){
+        for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
             it -> chaos(0.08);
         }
@@ -227,7 +243,7 @@ void ofApp::update(){
     if(meditation >= 81 && meditation <= 90){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 0.7;
-        for(vector<demoParticle>::iterator it = p.begin(); it != p.end(); it++ ){
+        for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
             it -> chaos(0.05);
         }
@@ -235,7 +251,7 @@ void ofApp::update(){
     if(meditation >= 91 && meditation <= 100){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 0.4;
-        for(vector<demoParticle>::iterator it = p.begin(); it != p.end(); it++ ){
+        for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
             it -> chaos(0.02);
         }
@@ -273,7 +289,7 @@ void ofApp::draw(){
         
     }
     
-    for(vector<demoParticle>::iterator it=p.begin(); it!=p.end(); it++){
+    for(vector<Particle>::iterator it=p.begin(); it!=p.end(); it++){
         it -> draw();
     }
     

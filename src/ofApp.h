@@ -34,6 +34,11 @@ public:
     float prevMw;
     float currMw;
     
+    int bTouchingForehead;
+    float signalQuality;
+    float alphaAbsolute;
+    float betaAbsolute;
+    
     // facetracking
     ofVideoGrabber cam;
     ofxFaceTracker tracker;
