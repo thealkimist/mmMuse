@@ -9,6 +9,11 @@ void ofApp::setup(){
     ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);
     ofBackground(0);
     
+    Width = ofGetWidth();
+    Height = ofGetHeight();
+    WindowWidth = ofGetWindowWidth();
+    WindowHeight = ofGetWindowHeight();
+    
     // set our port
     receiver.setup(port);
     
@@ -74,8 +79,7 @@ void ofApp::resetParticles(){
 void ofApp::update(){
     
     while (receiver.hasWaitingMessages()) {
-        ofxOscMessage m;
-        
+    
         receiver.getNextMessage(&m);
         
         if (m.getAddress() == "/muse/elements/touching_forehead") {
@@ -133,7 +137,7 @@ void ofApp::update(){
     for(vector<Particle>::iterator it=p.begin(); it!=p.end(); it++){
         it -> setMode(currentMode);
         it -> update(centerOfFace, attractPoints, transAtt, transMed);
-        it -> color.set( pixels.getColor( ofMap(it -> pos.x, 0, ofGetWindowWidth(), 0, 640), ofMap(it -> pos.y, 0, ofGetWindowHeight(), 0, 480) ));
+        it -> color.set( pixels.getColor( ofMap(it -> pos.x, 0, WindowWidth, 0, 640), ofMap(it -> pos.y, 0, WindowHeight, 0, 480) ));
         
     }
     
@@ -246,13 +250,12 @@ void ofApp::update(){
 void ofApp::draw(){
     ofSetColor(255);
     
-    
     //	ofDrawBitmapString(ofToString((int) ofGetFrameRate()), 10, 20);
     
-    ofPolyline leftEye = tracker.getImageFeature(ofxFaceTracker::LEFT_EYE);
-    ofPolyline rightEye = tracker.getImageFeature(ofxFaceTracker::RIGHT_EYE);
-    ofPolyline faceOutline = tracker.getImageFeature(ofxFaceTracker::FACE_OUTLINE);
-    ofPolyline jaw = tracker.getImageFeature(ofxFaceTracker::JAW);
+    leftEye = tracker.getImageFeature(ofxFaceTracker::LEFT_EYE);
+    rightEye = tracker.getImageFeature(ofxFaceTracker::RIGHT_EYE);
+    faceOutline = tracker.getImageFeature(ofxFaceTracker::FACE_OUTLINE);
+    jaw = tracker.getImageFeature(ofxFaceTracker::JAW);
     
     
     // mapping image to screen dimension
@@ -261,14 +264,14 @@ void ofApp::draw(){
         centerOfRightEye.set(rightEye.getCentroid2D() );
         centerOfLeftEye.set(leftEye.getCentroid2D() );
         centerOfJaw.set(jaw.getCentroid2D() );
-        attractPoints[0].x = ofMap(centerOfFace.x, 0, 640, 0, ofGetWindowWidth() );
-        attractPoints[0].y = ofMap(centerOfFace.y, 0, 480, 0, ofGetWindowHeight() );
-        attractPoints[1].x = ofMap(centerOfRightEye.x, 0, 640, 0, ofGetWindowWidth() );
-        attractPoints[1].y = ofMap(centerOfRightEye.y, 0, 480, 0, ofGetWindowHeight() );
-        attractPoints[2].x = ofMap(centerOfLeftEye.x, 0, 640, 0, ofGetWindowWidth() );
-        attractPoints[2].y = ofMap(centerOfLeftEye.y, 0, 480, 0, ofGetWindowHeight() );
-        attractPoints[3].x = ofMap(centerOfJaw.x, 0, 640, 0, ofGetWindowWidth() );
-        attractPoints[3].y = ofMap(centerOfJaw.y, 0, 480, 0, ofGetWindowHeight() );
+        attractPoints[0].x = ofMap(centerOfFace.x, 0, 640, 0, WindowWidth );
+        attractPoints[0].y = ofMap(centerOfFace.y, 0, 480, 0, WindowHeight );
+        attractPoints[1].x = ofMap(centerOfRightEye.x, 0, 640, 0, WindowWidth );
+        attractPoints[1].y = ofMap(centerOfRightEye.y, 0, 480, 0, WindowHeight );
+        attractPoints[2].x = ofMap(centerOfLeftEye.x, 0, 640, 0, WindowWidth );
+        attractPoints[2].y = ofMap(centerOfLeftEye.y, 0, 480, 0, WindowHeight );
+        attractPoints[3].x = ofMap(centerOfJaw.x, 0, 640, 0, WindowWidth );
+        attractPoints[3].y = ofMap(centerOfJaw.y, 0, 480, 0, WindowHeight );
     }
     
     for(vector<Particle>::iterator it=p.begin(); it!=p.end(); it++){
@@ -296,12 +299,12 @@ void ofApp::draw(){
     
     if(viewMode > 1){
         ofSetColor(255, 50, 150);
-        ofDrawRectangle(ofGetWidth()-35, 0, 35, meditation*5);
+        ofDrawRectangle(Width-35, 0, 35, meditation*5);
         ofSetColor(50, 255, 150);
-        ofDrawRectangle(ofGetWidth()-70, 0, 35, attention*5);
+        ofDrawRectangle(Width-70, 0, 35, attention*5);
         ofSetColor(255);
-        ofDrawBitmapString("M:"+ofToString(meditation), ofGetWidth()-35, 15);
-        ofDrawBitmapString("A:"+ofToString(attention), ofGetWidth()-70, 15);
+        ofDrawBitmapString("M:"+ofToString(meditation), Width-35, 15);
+        ofDrawBitmapString("A:"+ofToString(attention), Width-70, 15);
     
         if (sig > 0) {
             ofSetColor(255, 0, 30);
@@ -327,7 +330,7 @@ void ofApp::draw(){
     
     
     ofSetColor(0);
-    ofDrawRectangle(0, ofGetWindowHeight()-50, ofGetWindowWidth(), 50);
+    ofDrawRectangle(0, WindowHeight-50, WindowWidth, 50);
 }
 
 //--------------------------------------------------------------

@@ -19,7 +19,13 @@ public:
     void resetParticles();
     void keyPressed(int key);
     
+    int Width;
+    int Height;
+    int WindowWidth;
+    int WindowHeight;
+    
     ofxOscReceiver receiver;
+    ofxOscMessage m;
     
     // Muse values
     int bTouchingForehead;
@@ -37,11 +43,10 @@ public:
     // facetracking
     ofVideoGrabber cam;
     ofxFaceTracker tracker;
-    //    ofTexture mirror;
-    //    unsigned char *mirrorImage;
-    //
-    //    int camWidth;
-    //    int camHeight;
+    ofPolyline leftEye;
+    ofPolyline rightEye;
+    ofPolyline faceOutline;
+    ofPolyline jaw;
     
     particleMode currentMode;
     string currentModeStr;
