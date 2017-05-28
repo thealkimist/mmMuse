@@ -25,8 +25,6 @@ public:
     
     float atChangeTime;
     float meChangeTime;
-    float attention;
-    float meditation;
     float distAw;
     float prevAw;
     float currAw;
@@ -34,10 +32,13 @@ public:
     float prevMw;
     float currMw;
     
+    // Muse values
     int bTouchingForehead;
     float signalQuality;
-    float alphaAbsolute;
-    float betaAbsolute;
+    float alpha;
+    float gamma;
+    float attention;
+    float meditation;
     
     // facetracking
     ofVideoGrabber cam;

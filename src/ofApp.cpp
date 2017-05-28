@@ -15,8 +15,8 @@ void ofApp::setup(){
     // muse values
     bTouchingForehead = 0;
     signalQuality = 0;
-    alphaAbsolute = 0.0;
-    betaAbsolute = 0.0;
+    alpha = 0.0;
+    gamma = 0.0;
     
     // mapping values
     distAw = 0.0;
@@ -103,23 +103,25 @@ void ofApp::update(){
         
         if (m.getAddress() == "/muse/elements/touching_forehead") {
             bTouchingForehead = m.getArgAsInt32(0);
-            cout << "Touching Forehead: " << bTouchingForehead << endl;
+            //cout << "Touching Forehead: " << bTouchingForehead << endl;
         }
         if (m.getAddress() == "/muse/elements/horseshoe") {
             signalQuality = m.getArgAsFloat(0);
-            cout << "Signal Quality: " << signalQuality << endl;
+            //cout << "Signal Quality: " << signalQuality << endl;
         }
+        
+        // Meditation
         if (m.getAddress() == "/muse/elements/alpha_absolute") {
-//            string message = m.getArgAsString(0);
-//            int i = m.getArgAsInt32(1);
-//            uint64_t j = m.getArgAsInt64(2);
-//            float f = m.getArgAsFloat(3);
+            alpha = m.getArgAsFloat(0);
+            meditation = ofMap(alpha, -0.9, 0.9, 0, 100);
+            cout << "Meditation: " << alpha << endl;
         }
-        if (m.getAddress() == "/muse/elements/beta_absolute") {
-//            string message = m.getArgAsString(0);
-//            int i = m.getArgAsInt32(1);
-//            uint64_t j = m.getArgAsInt64(2);
-//            float f = m.getArgAsFloat(3);
+        
+        // Attention
+        if (m.getAddress() == "/muse/elements/gamma_absolute") {
+            gamma = m.getArgAsFloat(0);
+            attention = ofMap(gamma, -0.9, 0.9, 0, 100);
+            cout << "Attention: " << gamma << endl;
         }
     }
     
@@ -169,10 +171,10 @@ void ofApp::update(){
         transAtt = 1.4;
     }
     if(attention >= 81 && attention <= 90){
-        transAtt = 1.0;
+        transAtt = 1.1;
     }
     if(attention >=91 && attention <= 100){
-        transAtt = 0.7;
+        transAtt = 0.8;
     }
     
     // MEDITATION VALUES
@@ -181,7 +183,7 @@ void ofApp::update(){
         particles.frcVar = 5;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
-            it -> chaos(4);
+            it -> chaos(2.0);
         }
     }
     if(meditation >=11 && meditation <= 20){
@@ -189,7 +191,7 @@ void ofApp::update(){
         particles.frcVar = 4;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
-            it -> chaos(3);
+            it -> chaos(1.5);
         }
     }
     if(meditation >=21 && meditation <= 30){
@@ -197,7 +199,7 @@ void ofApp::update(){
         particles.frcVar = 3;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
-            it -> chaos(2);
+            it -> chaos(1.0);
         }
     }
     if(meditation >=31 && meditation <= 40){
@@ -205,7 +207,7 @@ void ofApp::update(){
         particles.frcVar = 2;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
-            it -> chaos(1);
+            it -> chaos(0.8);
         }
     }
     if(meditation >=41 && meditation <= 50){
@@ -213,7 +215,7 @@ void ofApp::update(){
         particles.frcVar = 1.7;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
-            it -> chaos(0.7);
+            it -> chaos(0.6);
         }
     }
     if(meditation >= 51 && meditation <= 60){
@@ -229,7 +231,7 @@ void ofApp::update(){
         particles.frcVar = 1.1;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
-            it -> chaos(0.15);
+            it -> chaos(0.3);
         }
     }
     if(meditation >= 71 && meditation <= 80){
@@ -237,7 +239,7 @@ void ofApp::update(){
         particles.frcVar = 0.8;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
-            it -> chaos(0.08);
+            it -> chaos(0.2);
         }
     }
     if(meditation >= 81 && meditation <= 90){
@@ -245,7 +247,7 @@ void ofApp::update(){
         particles.frcVar = 0.7;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
-            it -> chaos(0.05);
+            it -> chaos(0.1);
         }
     }
     if(meditation >= 91 && meditation <= 100){
@@ -253,7 +255,7 @@ void ofApp::update(){
         particles.frcVar = 0.4;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
             
-            it -> chaos(0.02);
+            it -> chaos(0.05);
         }
     }
 }
@@ -378,7 +380,7 @@ void ofApp::draw(){
     
     
     ofSetColor(0);
-    ofRectangle(0, ofGetWindowHeight()-50, ofGetWindowWidth(), 50);
+    ofDrawRectangle(0, ofGetWindowHeight()-50, ofGetWindowWidth(), 50);
 }
 
 //--------------------------------------------------------------
