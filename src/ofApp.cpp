@@ -81,11 +81,17 @@ void ofApp::update(){
         
         if (m.getAddress() == "/muse/elements/touching_forehead") {
             bTouchingForehead = m.getArgAsInt32(0);
-            //cout << "Touching Forehead: " << bTouchingForehead << endl;
+            cout << "Touching Forehead: " << bTouchingForehead << endl;
         }
         if (m.getAddress() == "/muse/elements/horseshoe") {
-            signalQuality = m.getArgAsFloat(0);
-            //cout << "Signal Quality: " << signalQuality << endl;
+            float one = m.getArgAsFloat(0);
+            float two = m.getArgAsFloat(1);
+            float three = m.getArgAsFloat(2);
+            float four = m.getArgAsFloat(3);
+            cout << "Signal Quality1: " << one << endl;
+            cout << "Signal Quality2: " << two << endl;
+            cout << "Signal Quality3: " << three << endl;
+            cout << "Signal Quality4: " << four << endl;
         }
         
         if (m.getAddress() == "/muse/elements/alpha_absolute") {
@@ -115,11 +121,11 @@ void ofApp::update(){
         
         alphaRelative = (pow(10, alpha) / (pow(10, alpha) + pow(10, beta) + pow(10, gamma) + pow(10, delta) + pow(10, theta)));
         gammaRelative = (pow(10, gamma) / (pow(10, alpha) + pow(10, beta) + pow(10, gamma) + pow(10, delta) + pow(10, theta)));
-        cout << "alpha relative: " << alphaRelative << endl;
-        cout << "gamma relative: " << gammaRelative << endl;
+        //cout << "alpha relative: " << alphaRelative << endl;
+        //cout << "gamma relative: " << gammaRelative << endl;
         
-        meditation = ofMap(alphaRelative, 0.001, 0.2, 0, 100);
-        attention = ofMap(gammaRelative, 0.001, 0.2, 0, 100);
+        meditation = ofMap(alphaRelative, 0.0, 0.2, 0, 100);
+        attention = ofMap(gammaRelative, 0.0, 0.2, 0, 100);
     }
     
     cam.update();
@@ -150,25 +156,25 @@ void ofApp::update(){
         transAtt = 3.4;
     }
     if(attention >=31 && attention <= 40){
-        transAtt = 3.0;
+        transAtt = 2.8;
     }
     if(attention >=41 && attention <= 50){
-        transAtt = 2.6;
+        transAtt = 2.4;
     }
     if(attention >= 51 && attention <= 60){
-        transAtt = 2.2;
+        transAtt = 2.0;
     }
     if(attention >= 61 && attention <=70){
-        transAtt = 1.8;
+        transAtt = 1.7;
     }
     if(attention >= 71 && attention <=80){
-        transAtt = 1.4;
+        transAtt = 1.5;
     }
     if(attention >= 81 && attention <= 90){
-        transAtt = 1.1;
+        transAtt = 1.3;
     }
     if(attention >=91 && attention <= 100){
-        transAtt = 0.8;
+        transAtt = 1.1;
     }
     
     // Meditation values = proximity to facial features
@@ -282,7 +288,6 @@ void ofApp::draw(){
         attractPoints[2].y = ofMap(centerOfLeftEye.y, 0, 480, 0, ofGetWindowHeight() );
         attractPoints[3].x = ofMap(centerOfJaw.x, 0, 640, 0, ofGetWindowWidth() );
         attractPoints[3].y = ofMap(centerOfJaw.y, 0, 480, 0, ofGetWindowHeight() );
-        
     }
     
     for(vector<Particle>::iterator it=p.begin(); it!=p.end(); it++){
@@ -347,30 +352,22 @@ void ofApp::draw(){
     }
     
     // Indicator Light for Signal
-    
-    //    if(thinkGear.getSignalQuality() == 200){
-    //        ofSetColor(255,0,0);
-    //        ofRectangle(0, 0, 12, 12);
-    //        ofSetColor(230);
-    //        ofDrawBitmapString(ofToString(thinkGear.getSignalQuality()) + " no signal", 13,12);
-    //    }else if (thinkGear.getSignalQuality() > 0 && thinkGear.getSignalQuality() < 100){
-    //        ofSetColor(255,255,0);
-    //        ofRectangle(0, 0, 12, 12);
-    //        ofSetColor(230);
-    //        ofDrawBitmapString(ofToString(thinkGear.getSignalQuality()) + " connecting... ", 13,12);
-    //
-    //        //        ofSetColor(230);
-    //        //        ofDrawBitmapString("make sure sensor is placed well", 2, 20);
-    //        //        ofSetColor(230);
-    //        //        ofDrawBitmapString("make sure ear clip is on", 2, 30);
-    //    }else if (thinkGear.getSignalQuality() == 0){
-    //        ofSetColor(0,255,0);
-    //        ofRectangle(0, 0, 12, 12);
-    //        ofSetColor(230);
-    //        ofDrawBitmapString(ofToString(thinkGear.getSignalQuality()) + " good signal", 13,12);
-    //    }
-    
-    //    cout << "signal: " << thinkGear.getSignalQuality() << endl;
+    if(signalQuality >= 3){
+        ofSetColor(255,0,0);
+        ofDrawRectangle(0, 0, 12, 12);
+        ofSetColor(230);
+        ofDrawBitmapString(" no signal", 13,12);
+    }else if (signalQuality == 2){
+        ofSetColor(255,255,0);
+        ofDrawRectangle(0, 0, 12, 12);
+        ofSetColor(230);
+        ofDrawBitmapString(" almost there", 13,12);
+    }else if (signalQuality == 1){
+        ofSetColor(0,255,0);
+        ofDrawRectangle(0, 0, 12, 12);
+        ofSetColor(230);
+        ofDrawBitmapString(" good signal", 13,12);
+    }
     
     
     ofSetColor(0);
