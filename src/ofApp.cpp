@@ -27,7 +27,7 @@ void ofApp::setup(){
     cam.initGrabber(640, 480);
     //    camWidth = 640;
     //    camHeight = 480;
-    //    cam.setVerbose(true);
+    cam.setVerbose(true);
     //    cam.initGrabber(camWidth, camHeight * 3);
     //    mirrorImage = new unsigned char(camWidth * camHeight * 3);
     //    mirror.allocate(camWidth, camHeight, GL_RGB);
@@ -84,14 +84,7 @@ void ofApp::update(){
             cout << "Touching Forehead: " << bTouchingForehead << endl;
         }
         if (m.getAddress() == "/muse/elements/horseshoe") {
-            float one = m.getArgAsFloat(0);
-            float two = m.getArgAsFloat(1);
-            float three = m.getArgAsFloat(2);
-            float four = m.getArgAsFloat(3);
-            cout << "Signal Quality1: " << one << endl;
-            cout << "Signal Quality2: " << two << endl;
-            cout << "Signal Quality3: " << three << endl;
-            cout << "Signal Quality4: " << four << endl;
+            signalQuality = m.getArgAsFloat(0);
         }
         
         if (m.getAddress() == "/muse/elements/alpha_absolute") {
@@ -356,7 +349,7 @@ void ofApp::draw(){
         ofSetColor(255,0,0);
         ofDrawRectangle(0, 0, 12, 12);
         ofSetColor(230);
-        ofDrawBitmapString(" no signal", 13,12);
+        ofDrawBitmapString(" poor signal", 13,12);
     }else if (signalQuality == 2){
         ofSetColor(255,255,0);
         ofDrawRectangle(0, 0, 12, 12);
