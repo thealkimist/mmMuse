@@ -8,6 +8,9 @@ Particle::Particle(){
     posVal = 0.0;
     timeVal = 0.0;
     frcVar = 0.0;
+    
+    Width = ofGetWidth();
+    Height = ofGetHeight();
 }
 
 //------------------------------------------------------------------
@@ -89,15 +92,15 @@ void Particle::update(ofPoint centerOfFace, vector <ofPoint> attractPoints, floa
     
     //3 - (optional) LIMIT THE PARTICLES TO STAY ON SCREEN
     //we could also pass in bounds to check - or alternatively do this at the testApp level
-    if( pos.x >= ofGetWidth() ){
-        pos.x = ofGetWidth();
+    if( pos.x >= Width ){
+        pos.x = Width;
         vel.x *= -1.0;
     }else if( pos.x <= 0 ){
         pos.x = 0;
         vel.x *= -1.0;
     }
-    if( pos.y >= ofGetHeight() ){
-        pos.y = ofGetHeight();
+    if( pos.y >= Height ){
+        pos.y = Height;
         vel.y *= -1.0;
     }
     else if( pos.y <= 0 ){
