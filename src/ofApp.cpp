@@ -17,18 +17,7 @@ void ofApp::setup(){
     signalQuality = 0;
     alpha = 0.0;
     gamma = 0.0;
-    
-    // mapping values
-    distAw = 0.0;
-    prevAw = 0.0;
-    currAw = 0.0;
-    distMw = 0.0;
-    prevMw = 0.0;
-    currMw = 0.0;
-    
-    atChangeTime = 0.0;
     attention = 0.0;
-    meChangeTime = 0.0;
     meditation = 0.0;
     
     // initialize camera
@@ -60,20 +49,6 @@ void ofApp::setup(){
     
 }
 
-//--------------------------------------------------------------
-void ofApp::attentionListener(float &param) {
-    attention = param;
-    distAw = ofMap(attention, 0.0, 100.0, 0, ofGetWidth());
-    atChangeTime = ofGetElapsedTimef();
-    
-    //cout << atChangeTime << endl;
-}
-
-void ofApp::meditationListener(float &param) {
-    meditation = param;
-    distMw = ofMap(meditation, 0.0, 100.0, 0, ofGetWidth());
-    meChangeTime = ofGetElapsedTimef();
-}
 
 //--------------------------------------------------------------
 void ofApp::resetParticles(){

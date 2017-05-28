@@ -20,18 +20,6 @@ public:
     
     ofxOscReceiver receiver;
     
-    void attentionListener(float &param);
-    void meditationListener(float &param);
-    
-    float atChangeTime;
-    float meChangeTime;
-    float distAw;
-    float prevAw;
-    float currAw;
-    float distMw;
-    float prevMw;
-    float currMw;
-    
     // Muse values
     int bTouchingForehead;
     float signalQuality;
