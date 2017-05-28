@@ -45,7 +45,6 @@ void ofApp::setup(){
     centerOfLeftEye.set(0,0,0);
     centerOfJaw.set(0,0,0);
     
-    
     transAtt = 0;
     transMed = 0;
     //-----------
@@ -81,10 +80,10 @@ void ofApp::update(){
         
         if (m.getAddress() == "/muse/elements/touching_forehead") {
             bTouchingForehead = m.getArgAsInt32(0);
-            cout << "Touching Forehead: " << bTouchingForehead << endl;
+            //cout << "Touching Forehead: " << bTouchingForehead << endl;
         }
         if (m.getAddress() == "/muse/elements/horseshoe") {
-            signalQuality = m.getArgAsFloat(0);
+            signalQuality = m.getArgAsFloat(1);
         }
         
         if (m.getAddress() == "/muse/elements/alpha_absolute") {
@@ -114,8 +113,8 @@ void ofApp::update(){
         
         alphaRelative = (pow(10, alpha) / (pow(10, alpha) + pow(10, beta) + pow(10, gamma) + pow(10, delta) + pow(10, theta)));
         gammaRelative = (pow(10, gamma) / (pow(10, alpha) + pow(10, beta) + pow(10, gamma) + pow(10, delta) + pow(10, theta)));
-        //cout << "alpha relative: " << alphaRelative << endl;
-        //cout << "gamma relative: " << gammaRelative << endl;
+        cout << "alpha relative: " << alphaRelative << endl;
+        cout << "gamma relative: " << gammaRelative << endl;
         
         meditation = ofMap(alphaRelative, 0.0, 0.2, 0, 100);
         attention = ofMap(gammaRelative, 0.0, 0.2, 0, 100);
@@ -175,7 +174,6 @@ void ofApp::update(){
         transMed = ofRandom(0.90,0.98);
         particles.frcVar = 5;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            
             it -> chaos(2.0);
         }
     }
@@ -183,7 +181,6 @@ void ofApp::update(){
         transMed = ofRandom(0.91,0.98);
         particles.frcVar = 4;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            
             it -> chaos(1.5);
         }
     }
@@ -191,7 +188,6 @@ void ofApp::update(){
         transMed = ofRandom(0.92,0.98);
         particles.frcVar = 3;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            
             it -> chaos(1.0);
         }
     }
@@ -199,7 +195,6 @@ void ofApp::update(){
         transMed = ofRandom(0.93,0.98);
         particles.frcVar = 2;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            
             it -> chaos(0.8);
         }
     }
@@ -207,7 +202,6 @@ void ofApp::update(){
         transMed = ofRandom(0.94,0.98);
         particles.frcVar = 1.7;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            
             it -> chaos(0.6);
         }
     }
@@ -215,7 +209,6 @@ void ofApp::update(){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 1.4;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            
             it -> chaos(0.4);
         }
     }
@@ -223,7 +216,6 @@ void ofApp::update(){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 1.1;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            
             it -> chaos(0.3);
         }
     }
@@ -231,7 +223,6 @@ void ofApp::update(){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 0.8;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            
             it -> chaos(0.2);
         }
     }
@@ -239,7 +230,6 @@ void ofApp::update(){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 0.7;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            
             it -> chaos(0.1);
         }
     }
@@ -247,7 +237,6 @@ void ofApp::update(){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 0.4;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            
             it -> chaos(0.05);
         }
     }
@@ -264,7 +253,6 @@ void ofApp::draw(){
     ofPolyline rightEye = tracker.getImageFeature(ofxFaceTracker::RIGHT_EYE);
     ofPolyline faceOutline = tracker.getImageFeature(ofxFaceTracker::FACE_OUTLINE);
     ofPolyline jaw = tracker.getImageFeature(ofxFaceTracker::JAW);
-    
     
     
     // mapping image to screen dimension
@@ -287,19 +275,6 @@ void ofApp::draw(){
         it -> draw();
     }
     
-    //    ofSetColor(190);
-    //    //needed only for nearest point mode
-    //	if( currentMode == PARTICLE_MODE_NEAREST_POINTS ){
-    //
-    //		for(int i = 0; i < attractPoints.size(); i++){
-    //			ofNoFill();
-    //			ofCircle(attractPointsWithMovement[i], 10);
-    //			ofFill();
-    //			ofCircle(attractPointsWithMovement[i], 4);
-    //		}
-    //	}
-    
-    
     if(viewMode > 0){
         //draw fps
         ofSetColor(200);
@@ -319,47 +294,35 @@ void ofApp::draw(){
         tracker.draw();
     }
     
-    //    if(viewMode > 1){
-    //        //draw meditation bar
-    //        ofSetColor(255, 50, 150);
-    //        ofRectangle(ofGetWidth()-35, 0, 35, meditation*5);
-    //
-    //        ofSetColor(50, 255, 150);
-    //        ofRectangle(ofGetWidth()-70, 0, 35, attention*5);
-    //
-    //        ofSetColor(255);
-    //        ofDrawBitmapString("M:"+ofToString(meditation), ofGetWidth()-35, 15);
-    //        ofDrawBitmapString("A:"+ofToString(attention), ofGetWidth()-70, 15);
-    //
-    //
-    //        if (sig > 0) {
-    //            ofSetColor(255, 0, 30);
-    //            ofCircle(ofGetWidth()-200, 30, 30);
-    //        }
-    //
-    //    }
+    if(viewMode > 1){
+        ofSetColor(255, 50, 150);
+        ofDrawRectangle(ofGetWidth()-35, 0, 35, meditation*5);
+        ofSetColor(50, 255, 150);
+        ofDrawRectangle(ofGetWidth()-70, 0, 35, attention*5);
+        ofSetColor(255);
+        ofDrawBitmapString("M:"+ofToString(meditation), ofGetWidth()-35, 15);
+        ofDrawBitmapString("A:"+ofToString(attention), ofGetWidth()-70, 15);
+    
+        if (sig > 0) {
+            ofSetColor(255, 0, 30);
+            ofDrawCircle(ofGetWidth()-200, 30, 30);
+        }
+    }
     
     if(viewMode > 2){
-        
         cam.draw(50, ofGetHeight()-600);
     }
     
     // Indicator Light for Signal
     if(signalQuality >= 3){
         ofSetColor(255,0,0);
-        ofDrawRectangle(0, 0, 12, 12);
-        ofSetColor(230);
-        ofDrawBitmapString(" poor signal", 13,12);
+        ofDrawRectangle(0, 0, 8, 8);
     }else if (signalQuality == 2){
         ofSetColor(255,255,0);
-        ofDrawRectangle(0, 0, 12, 12);
-        ofSetColor(230);
-        ofDrawBitmapString(" almost there", 13,12);
+        ofDrawRectangle(0, 0, 8, 8);
     }else if (signalQuality == 1){
         ofSetColor(0,255,0);
-        ofDrawRectangle(0, 0, 12, 12);
-        ofSetColor(230);
-        ofDrawBitmapString(" good signal", 13,12);
+        ofDrawRectangle(0, 0, 8, 8);
     }
     
     
@@ -372,10 +335,9 @@ void ofApp::keyPressed(int key) {
     if(key == 'r') {
         tracker.reset();
     }
+    
     if(key == 'v'){
-        
         viewMode ++;
-        
         if(viewMode > 3) viewMode = 0;
     }
     
