@@ -6,6 +6,7 @@
 #include "ofxFaceTracker.h"
 #include "ofxNetwork.h"
 #include "ofxOsc.h"
+#include <cmath>
 
 const int port = 5000;
 
@@ -24,7 +25,12 @@ public:
     int bTouchingForehead;
     float signalQuality;
     float alpha;
+    float beta;
     float gamma;
+    float theta;
+    float delta;
+    float alphaRelative;
+    float gammaRelative;
     float attention;
     float meditation;
     

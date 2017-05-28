@@ -16,7 +16,10 @@ void ofApp::setup(){
     bTouchingForehead = 0;
     signalQuality = 0;
     alpha = 0.0;
+    beta = 0.0;
     gamma = 0.0;
+    delta = 0.0;
+    theta = 0.0;
     attention = 0.0;
     meditation = 0.0;
     
@@ -85,19 +88,38 @@ void ofApp::update(){
             //cout << "Signal Quality: " << signalQuality << endl;
         }
         
-        // Meditation
         if (m.getAddress() == "/muse/elements/alpha_absolute") {
             alpha = m.getArgAsFloat(0);
-            meditation = ofMap(alpha, -0.9, 0.9, 0, 100);
-            cout << "Meditation: " << alpha << endl;
+            //cout << "Alpha: " << alpha << endl;
         }
         
-        // Attention
+        if (m.getAddress() == "/muse/elements/beta_absolute") {
+            beta = m.getArgAsFloat(0);
+            //cout << "Beta: " << beta << endl;
+        }
+        
         if (m.getAddress() == "/muse/elements/gamma_absolute") {
             gamma = m.getArgAsFloat(0);
-            attention = ofMap(gamma, -0.9, 0.9, 0, 100);
-            cout << "Attention: " << gamma << endl;
+            //cout << "Gamma: " << gamma << endl;
         }
+        
+        if (m.getAddress() == "/muse/elements/delta_absolute") {
+            delta = m.getArgAsFloat(0);
+            //cout << "Delta: " << delta << endl;
+        }
+
+        if (m.getAddress() == "/muse/elements/theta_absolute") {
+            theta = m.getArgAsFloat(0);
+            //cout << "Theta: " << theta << endl;
+        }
+        
+        alphaRelative = (pow(10, alpha) / (pow(10, alpha) + pow(10, beta) + pow(10, gamma) + pow(10, delta) + pow(10, theta)));
+        gammaRelative = (pow(10, gamma) / (pow(10, alpha) + pow(10, beta) + pow(10, gamma) + pow(10, delta) + pow(10, theta)));
+        cout << "alpha relative: " << alphaRelative << endl;
+        cout << "gamma relative: " << gammaRelative << endl;
+        
+        meditation = ofMap(alphaRelative, 0.001, 0.2, 0, 100);
+        attention = ofMap(gammaRelative, 0.001, 0.2, 0, 100);
     }
     
     cam.update();
@@ -117,12 +139,9 @@ void ofApp::update(){
         
     }
     
-    //    cout << "attention: " << attention << endl;
-    //    cout << "meditation: " << meditation << endl;
-    
-    // ATTENTION VALUES
+    // Attention values = particle size/resolution
     if(attention >= 0 && attention <= 10){
-        transAtt = 4.2;         //changes size of particles
+        transAtt = 4.2;
     }
     if(attention >=11 && attention <= 20){
         transAtt = 3.8;
@@ -152,7 +171,7 @@ void ofApp::update(){
         transAtt = 0.8;
     }
     
-    // MEDITATION VALUES
+    // Meditation values = proximity to facial features
     if(meditation >= 0 && meditation <= 10){
         transMed = ofRandom(0.90,0.98);
         particles.frcVar = 5;
