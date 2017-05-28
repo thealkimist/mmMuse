@@ -120,8 +120,8 @@ void ofApp::update(){
         cout << "alpha relative: " << alphaRelative << endl;
         cout << "gamma relative: " << gammaRelative << endl;
         
-        meditation = ofMap(alphaRelative, 0.0, 0.2, 0, 100);
-        attention = ofMap(gammaRelative, 0.0, 0.2, 0, 100);
+        meditation = ofMap(alphaRelative, 0.3, 0.0, 0, 100);
+        attention = ofMap(gammaRelative, 0.2, 0.0, 0, 100);
     }
     
     cam.update();
@@ -158,19 +158,19 @@ void ofApp::update(){
         transAtt = 2.4;
     }
     if(attention >= 51 && attention <= 60){
-        transAtt = 2.0;
+        transAtt = 2.1;
     }
     if(attention >= 61 && attention <=70){
         transAtt = 1.7;
     }
     if(attention >= 71 && attention <=80){
-        transAtt = 1.5;
+        transAtt = 1.4;
     }
     if(attention >= 81 && attention <= 90){
-        transAtt = 1.3;
+        transAtt = 1.1;
     }
     if(attention >=91 && attention <= 100){
-        transAtt = 1.1;
+        transAtt = 0.7;
     }
     
     // Meditation values = proximity to facial features
@@ -178,14 +178,14 @@ void ofApp::update(){
         transMed = ofRandom(0.90,0.98);
         particles.frcVar = 5;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            it -> chaos(2.0);
+            it -> chaos(1.5);
         }
     }
     if(meditation >=11 && meditation <= 20){
         transMed = ofRandom(0.91,0.98);
         particles.frcVar = 4;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            it -> chaos(1.5);
+            it -> chaos(1.25);
         }
     }
     if(meditation >=21 && meditation <= 30){
@@ -234,14 +234,14 @@ void ofApp::update(){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 0.7;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            it -> chaos(0.1);
+            it -> chaos(0.18);
         }
     }
     if(meditation >= 91 && meditation <= 100){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 0.4;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            it -> chaos(0.05);
+            it -> chaos(0.15);
         }
     }
 }
