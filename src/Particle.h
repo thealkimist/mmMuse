@@ -35,8 +35,8 @@ public:
     void draw();
     void chaos(float forceMultipler);
 
-    int Width;
-    int Height;
+    int appWidth;
+    int appHeight;
     
     ofPoint pos;
     ofPoint vel;
