@@ -51,6 +51,7 @@ public:
     // facetracking
     ofVideoGrabber cam;
     ofxFaceTracker tracker;
+    
     ofPolyline leftEye;
     ofPolyline rightEye;
     ofPolyline faceOutline;

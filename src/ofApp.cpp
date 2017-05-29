@@ -31,7 +31,7 @@ void ofApp::setup(){
     // initialize camera
     cam.initGrabber(640, 480);
     cam.setVerbose(true);
-    
+
     tracker.setup();
     tracker.setRescale(0.5);
     
@@ -121,11 +121,10 @@ void ofApp::update(){
     
     cam.update();
     if(cam.isFrameNew()) {
+        ofTexture _texture;
+        _texture = cam.getTexture();
+        _texture.readToPixels(pixels);
         tracker.update(toCv(cam));
-        ofTexture _text;
-        _text = cam.getTexture();
-        _text.readToPixels(pixels);
-        
     }
     
     // Attention values = particle size/resolution
@@ -243,6 +242,9 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofSetColor(255);
+    ofPushMatrix();
+    ofScale(-1, 1);
+    ofPopMatrix();
     
     //	ofDrawBitmapString(ofToString((int) ofGetFrameRate()), 10, 20);
     
@@ -250,8 +252,7 @@ void ofApp::draw(){
     rightEye = tracker.getImageFeature(ofxFaceTracker::RIGHT_EYE);
     faceOutline = tracker.getImageFeature(ofxFaceTracker::FACE_OUTLINE);
     jaw = tracker.getImageFeature(ofxFaceTracker::JAW);
-    
-    
+
     // mapping image to screen dimension
     if(faceOutline.size() > 0){
         centerOfFace.set(faceOutline.getCentroid2D() );
@@ -267,7 +268,7 @@ void ofApp::draw(){
         attractPoints[3].x = ofMap(centerOfJaw.x, 0, 640, 0, appScreenWidth);
         attractPoints[3].y = ofMap(centerOfJaw.y, 0, 480, 0, appScreenHeight);
     }
-    
+
     for(vector<Particle>::iterator it=p.begin(); it!=p.end(); it++){
         it -> draw();
     }
@@ -307,7 +308,7 @@ void ofApp::draw(){
     }
     
     if(viewMode > 2){
-        cam.draw(50, Height-600);
+        cam.draw(cam.getWidth(), 0, -cam.getWidth(), Height-600);
     }
     
     // Indicator Light for Signal

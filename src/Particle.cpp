@@ -24,13 +24,11 @@ void Particle::setAttractPoints( vector <ofPoint> * attract ){
 }
 void Particle::reset(){
     uniqueVal = ofRandom(-10000, 10000);
-    
     pos.x = ofRandomWidth();
     pos.y = ofRandomHeight();
     frc = ofPoint(0,0,0);
     vel.x = ofRandom(-3.9,3.9);
     vel.y = ofRandom(-3.9,3.9);
-    
 }
 
 void Particle::chaos(float forceMultipler){
