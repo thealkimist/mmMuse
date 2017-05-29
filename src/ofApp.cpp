@@ -11,13 +11,13 @@ void ofApp::setup(){
     
     Width = ofGetWidth();
     Height = ofGetHeight();
-    WindowWidth = ofGetWindowWidth();
-    WindowHeight = ofGetWindowHeight();
+    appScreenWidth = ofGetScreenWidth();
+    appScreenHeight = ofGetScreenHeight();
     
-    // set our port
+    // Set our port
     receiver.setup(port);
     
-    // muse values
+    // Muse values
     bTouchingForehead = 0;
     signalQuality = 0;
     alpha = 0.0;
@@ -30,18 +30,13 @@ void ofApp::setup(){
     
     // initialize camera
     cam.initGrabber(640, 480);
-    //    camWidth = 640;
-    //    camHeight = 480;
     cam.setVerbose(true);
-    //    cam.initGrabber(camWidth, camHeight * 3);
-    //    mirrorImage = new unsigned char(camWidth * camHeight * 3);
-    //    mirror.allocate(camWidth, camHeight, GL_RGB);
     
     tracker.setup();
-    tracker.setRescale(.5);
+    tracker.setRescale(0.5);
     
-    int num = 7000;
-    p.assign(num, Particle());
+    int numberOfParticles = 5000;
+    p.assign(numberOfParticles, Particle());
     currentMode = PARTICLE_MODE_NEAREST_POINTS;
     resetParticles();
     
@@ -135,34 +130,34 @@ void ofApp::update(){
     
     // Attention values = particle size/resolution
     if(attention >= 0 && attention <= 10){
-        transAtt = 4.2;
+        transAtt = 6.1;
     }
     if(attention >=11 && attention <= 20){
-        transAtt = 3.8;
+        transAtt = 5.5;
     }
     if(attention >=21 && attention <= 30){
-        transAtt = 3.4;
+        transAtt = 4.8;
     }
     if(attention >=31 && attention <= 40){
-        transAtt = 2.8;
+        transAtt = 4.1;
     }
     if(attention >=41 && attention <= 50){
-        transAtt = 2.4;
+        transAtt = 3.4;
     }
     if(attention >= 51 && attention <= 60){
-        transAtt = 2.1;
+        transAtt = 2.7;
     }
     if(attention >= 61 && attention <=70){
-        transAtt = 1.7;
+        transAtt = 2.0;
     }
     if(attention >= 71 && attention <=80){
         transAtt = 1.4;
     }
     if(attention >= 81 && attention <= 90){
-        transAtt = 1.1;
+        transAtt = 0.9;
     }
     if(attention >=91 && attention <= 100){
-        transAtt = 0.7;
+        transAtt = 0.4;
     }
     
     // Meditation values = proximity to facial features
@@ -170,21 +165,21 @@ void ofApp::update(){
         transMed = ofRandom(0.90,0.98);
         particles.frcVar = 5;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            it -> chaos(1.5);
+            it -> chaos(2.0);
         }
     }
     if(meditation >=11 && meditation <= 20){
         transMed = ofRandom(0.91,0.98);
         particles.frcVar = 4;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            it -> chaos(1.25);
+            it -> chaos(1.6);
         }
     }
     if(meditation >=21 && meditation <= 30){
         transMed = ofRandom(0.92,0.98);
         particles.frcVar = 3;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            it -> chaos(1.0);
+            it -> chaos(1.2);
         }
     }
     if(meditation >=31 && meditation <= 40){
@@ -205,35 +200,35 @@ void ofApp::update(){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 1.4;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            it -> chaos(0.4);
+            it -> chaos(0.32);
         }
     }
     if(meditation >= 61 && meditation <= 70){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 1.1;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            it -> chaos(0.3);
+            it -> chaos(0.25);
         }
     }
     if(meditation >= 71 && meditation <= 80){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 0.8;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            it -> chaos(0.2);
+            it -> chaos(0.17);
         }
     }
     if(meditation >= 81 && meditation <= 90){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 0.7;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            it -> chaos(0.18);
+            it -> chaos(0.11);
         }
     }
     if(meditation >= 91 && meditation <= 100){
         transMed = ofRandom(0.97,0.98);
         particles.frcVar = 0.4;
         for(vector<Particle>::iterator it = p.begin(); it != p.end(); it++ ){
-            it -> chaos(0.15);
+            it -> chaos(0.05);
         }
     }
 
@@ -241,7 +236,7 @@ void ofApp::update(){
     for(vector<Particle>::iterator it=p.begin(); it!=p.end(); it++){
         it -> setMode(currentMode);
         it -> update(centerOfFace, attractPoints, transAtt, transMed);
-        it -> color.set( pixels.getColor( ofMap(it -> pos.x, 0, WindowWidth, 0, 640), ofMap(it -> pos.y, 0, WindowHeight, 0, 480) ));
+        it -> color.set( pixels.getColor( ofMap(it -> pos.x, 0, appScreenWidth, 0, 640), ofMap(it -> pos.y, 0, appScreenHeight, 0, 480) ));
     }
 }
 
@@ -263,14 +258,14 @@ void ofApp::draw(){
         centerOfRightEye.set(rightEye.getCentroid2D() );
         centerOfLeftEye.set(leftEye.getCentroid2D() );
         centerOfJaw.set(jaw.getCentroid2D() );
-        attractPoints[0].x = ofMap(centerOfFace.x, 0, 640, 0, WindowWidth );
-        attractPoints[0].y = ofMap(centerOfFace.y, 0, 480, 0, WindowHeight );
-        attractPoints[1].x = ofMap(centerOfRightEye.x, 0, 640, 0, WindowWidth );
-        attractPoints[1].y = ofMap(centerOfRightEye.y, 0, 480, 0, WindowHeight );
-        attractPoints[2].x = ofMap(centerOfLeftEye.x, 0, 640, 0, WindowWidth );
-        attractPoints[2].y = ofMap(centerOfLeftEye.y, 0, 480, 0, WindowHeight );
-        attractPoints[3].x = ofMap(centerOfJaw.x, 0, 640, 0, WindowWidth );
-        attractPoints[3].y = ofMap(centerOfJaw.y, 0, 480, 0, WindowHeight );
+        attractPoints[0].x = ofMap(centerOfFace.x, 0, 640, 0, appScreenWidth);
+        attractPoints[0].y = ofMap(centerOfFace.y, 0, 480, 0, appScreenHeight);
+        attractPoints[1].x = ofMap(centerOfRightEye.x, 0, 640, 0, appScreenWidth);
+        attractPoints[1].y = ofMap(centerOfRightEye.y, 0, 480, 0, appScreenHeight);
+        attractPoints[2].x = ofMap(centerOfLeftEye.x, 0, 640, 0, appScreenWidth);
+        attractPoints[2].y = ofMap(centerOfLeftEye.y, 0, 480, 0, appScreenHeight);
+        attractPoints[3].x = ofMap(centerOfJaw.x, 0, 640, 0, appScreenWidth);
+        attractPoints[3].y = ofMap(centerOfJaw.y, 0, 480, 0, appScreenHeight);
     }
     
     for(vector<Particle>::iterator it=p.begin(); it!=p.end(); it++){
@@ -331,16 +326,11 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-    if(key == 'r') {
-        tracker.reset();
-    }
-    
+    if(key == 'f') ofToggleFullscreen();
+    if(key == 'r') tracker.reset();
+    if(key == OF_KEY_SHIFT) viewMode = 3;
     if(key == 'v'){
         viewMode ++;
         if(viewMode > 3) viewMode = 0;
     }
-    
-    if(key == OF_KEY_SHIFT) viewMode = 3;
-    
-    if(key == 'f') ofToggleFullscreen();
 }

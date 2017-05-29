@@ -1,6 +1,6 @@
 //
-//  demoParticle.h
-//  mySketch
+//  Particle.h
+//  mmMuse
 //
 //  Created by Albert Kim on 5/8/17.
 //
@@ -8,7 +8,6 @@
 
 #ifndef demoParticle_h
 #define demoParticle_h
-
 
 #pragma once
 #include "ofMain.h"

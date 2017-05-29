@@ -1,3 +1,11 @@
+//
+//  ofApp.h
+//  mmMuse
+//
+//  Created by Albert Kim on 5/8/17.
+//
+//
+
 #pragma once
 
 #include "ofMain.h"
@@ -21,8 +29,8 @@ public:
     
     int Width;
     int Height;
-    int WindowWidth;
-    int WindowHeight;
+    int appScreenWidth;
+    int appScreenHeight;
     
     ofxOscReceiver receiver;
     ofxOscMessage m;
